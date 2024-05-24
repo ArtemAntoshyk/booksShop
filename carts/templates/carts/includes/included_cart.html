@@ -1,0 +1,71 @@
+{% load static %}
+
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-header bg-dark text-light">
+            <h5 class="card-title">Cart</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for cart in carts %}
+                <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h6>{{ cart.book.name_book }}</h6>
+                        </div>
+                        <div class="col-md-auto">
+                            <div class="input-group input-group-sm">
+                                {% if cart.quantity > 1 %}
+                                    <form class="d-flex" action="{% url "cart:cart_change" %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ cart.id }}" class="form-control me-3"
+                                               name="cart_id">
+                                        <input type="hidden" name="action" value="decrement">
+                                        <button class="btn btn-dark decrement" type="submit">-</button>
+                                    </form>
+                                {% endif %}
+                                <input type="text" class="form-control text-center number" value="{{ cart.quantity }}"
+                                       readonly>
+                                <form class="d-flex" action="{% url "cart:cart_change" %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ cart.id }}" class="form-control me-2" name="cart_id">
+                                    <input type="hidden" name="action" value="increment">
+                                    <button class="btn btn-dark increment" type="submit">+</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <p>x {{ cart.book.sell_price }} = <strong>{{ cart.books_price }} $</strong></p>
+                        </div>
+                        <div class="col-auto">
+                            <form class="d-flex" action="{% url "cart:cart_remove" %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ cart.id }}" class="form-control me-2" name="cart_id"
+                                       placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success text-white" type="submit">
+                                    <img src="{% static "deps/icons/trash3-fill.svg" %}" alt="Remove Item" width="20"
+                                         height="20">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="card-footer bg-dark text-light">
+            <div class="row">
+                <div class="col">
+                    <p class="mb-0">Total items: <strong>{{ carts.total_quantity }}</strong></p>
+                </div>
+                <div class="col-auto">
+                    <h4 class="mb-0"><strong>{{ carts.total_price }} $</strong></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if carts and not orders %}
+<a class="btn btn-dark" href="{% url "orders:create_order" %}">
+    Place Order
+</a>
+{% endif %}

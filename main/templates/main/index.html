@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
+    <style>
+        .custom-header {
+            border: 2px solid white;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            display: inline-block;
+        }
+        .article-block {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block modal_cart %}
+    {% include "includes/cart_button.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <h1 class="custom-header mt-5 pt-5"><strong>{{ content }}</strong></h1>
+        <div class="article-block">
+            <h2>Why Reading Is Beneficial?</h2>
+            <p>Reading books has numerous benefits. They stimulate our imagination, improve our vocabulary, enhance literacy, and even contribute to better sleep. Books help us understand other cultures, broaden our perspectives, and refine our critical thinking. Reading can also reduce stress and improve concentration.</p>
+            <p>Regular reading also boosts intellectual abilities, enhances memory, and analytical skills. It can be a wonderful way to spend time, discover new interests, and enjoy the creativity of authors from around the world.</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+<footer class="py-4 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Books Store</p>
+    </div>
+</footer>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block modal_cart %}
+    {% include "includes/cart_button.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="card mb-4 custom-shadow">
+            <div class="row">
+                <!-- Thumbnails -->
+                <div class="col-md-4 d-flex justify-content-center">
+                    <img src="{{ books.image }}"
+                         class="img-thumbnail mx-auto" data-bs-toggle="modal" data-bs-target="#imageModal1">
+                </div>
+                <!-- Product Description -->
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">Price: <strong>{{ books.price }} $</strong></p>
+                        <h5 class="card-title"> <strong>{{ books.name_book }}</strong></h5>
+                        <h6 class="card-title"><strong>Author: {{ books.author }}</strong></h6>
+                        <p class="card-text">{{ books.description }}</p>
+
+                        <form method="POST" action="{% url 'cart:cart_add' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="book_id" value="{{ books.id }}">
+                            <button type="submit" class="btn btn-dark btn-block">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Enlarge Image in Modal -->
+            <div class="modal fade" id="imageModal1" tabindex="-1"
+                 aria-labelledby="imageModal1Label" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="imageModal1Label">{{ books.name_book }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{{ books.image }}"
+                                 class="img-fluid" alt="Image 1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
