@@ -73,28 +73,61 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
+# @login_required
+# def profile(request):
+#     if request.method == 'POST':
+#         form = ProfileForm(data=request.POST, instance=request.user, files=request.FILES)
+#         if form.is_valid():
+#
+#             form.save()
+#             session_key = request.session.session_key
+#
+#             user = form.instance
+#             if session_key:
+#                 Cart.objects.filter(session_key=session_key).update(client=user)
+#             # print(form.password)
+#             messages.success(request, "Профайл успешно обновлен")
+#             return HttpResponseRedirect(reverse('user:profile'))
+#     else:
+#         form = ProfileForm(instance=request.user)
+
+# orders = Order.objects.filter(user=request.user).prefetch_related(
+#     Prefetch(
+#         "orderitem_set",
+#         queryset=OrderItem.objects.select_related("product"),
+#     )
+# ).order_by("-id")
+
+# context = {
+#     'title': 'Home - Кабинет',
+#     'form': form,
+#     # 'orders': orders,
+# }
+# return render(request, 'users/profile.html', context)
+
 @login_required
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(data=request.POST, instance=request.user, files=request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Профайл успешно обновлен")
+            user = form.save(commit=False)
+            user.password = form.cleaned_data.get('password', user.password)  # Encrypt password if changed
+            user.save()
+            session_key = request.session.session_key
+
+            if session_key:
+                Cart.objects.filter(session_key=session_key).update(client=user)
+
+            messages.success(request, "successfully update ")
             return HttpResponseRedirect(reverse('user:profile'))
+        else:
+            print(form.errors)  # For debugging
     else:
         form = ProfileForm(instance=request.user)
 
-    # orders = Order.objects.filter(user=request.user).prefetch_related(
-    #     Prefetch(
-    #         "orderitem_set",
-    #         queryset=OrderItem.objects.select_related("product"),
-    #     )
-    # ).order_by("-id")
-
     context = {
-        'title': 'Home - Кабинет',
-        'form': form,
-        # 'orders': orders,
+        'title': 'Home - Профиль',
+        'form': form
     }
     return render(request, 'users/profile.html', context)
 
@@ -108,3 +141,4 @@ def logout(request):
     messages.success(request, f"{request.user.username}, Вы вышли из аккаунта")
     auth.logout(request)
     return redirect(reverse('main:index'))
+

@@ -74,6 +74,18 @@
                                         <div class="alert alert-danger alert-dismissible fade show">{{ form.email.errors }}</div>
                                     {% endif %}
                                 </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_email" class="form-label">New password*</label>
+                                    <input type="password" class="form-control" id="id_password"
+                                           name="password"
+                                           placeholder="New password"
+                                           value="defaultPass"
+                                           >
+                                    {% if form.password.errors %}
+                                        <div class="alert alert-danger alert-dismissible fade show">{{ form.password.errors }}</div>
+                                    {% endif %}
+                                </div>
+
                             </div>
                             <button type="submit" class="btn btn-dark">Save</button>
                         </form>

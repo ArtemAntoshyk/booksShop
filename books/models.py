@@ -16,14 +16,14 @@ class Author(models.Model):
 
 
 class Books(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name="айді книги")
+    id = models.IntegerField(primary_key=True,auto_created=True, verbose_name="айді книги")
     name_book = models.CharField(max_length=150, unique=True, verbose_name='Назви книжок')
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
     page_amount = models.PositiveIntegerField(verbose_name='Кількість сторінок')
     year_production = models.PositiveIntegerField(verbose_name='Рік видання')
     description = models.CharField(verbose_name="Опис")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Ціна')
-    image = models.ImageField(upload_to='books_image', verbose_name="IMAGE", null=True)
+    image = models.CharField( verbose_name="IMAGE", null=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="Author id")
 
     class Meta:

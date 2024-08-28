@@ -10,8 +10,6 @@ def index(request):
         'title': 'Home - MAIN',
         'content': "Books store LIFE-BOOK",
         'text_on_page': """
-        
-        
         """
     }
 
@@ -40,7 +38,15 @@ Convenience: Shop from the comfort of your home and enjoy fast, reliable shippin
 Community: We are more than just a bookstore; we are a community of book enthusiasts. Join us for author events, book clubs, and discussions, both online and offline, and connect with fellow readers from around the world.
 
 At Life Book, we are passionate about books and dedicated to fostering a love for reading. Thank you for choosing us as your go-to online bookstore. Happy reading!
-"""
+""",
+        'contacts': '+3809455465464, booksShop@gmail.com'
     }
 
     return render(request, 'main/about.html', context)
+
+def contact(request):
+    context = {
+        'phone': '+3809455465464'
+    }
+
+    return render(request, 'main/contact.html', context)
